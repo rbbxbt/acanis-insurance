@@ -9,7 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Questrial&display=swap" rel="stylesheet">
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    document.documentElement.classList.add('js');
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  </script>
   <style>
     :root {
       --paper: #f7f7f2;
@@ -248,6 +251,16 @@
     });
 
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    function resetToHome() {
+      if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
+      const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, 0);
+      document.documentElement.style.scrollBehavior = previousScrollBehavior;
+    }
+    window.addEventListener('load', resetToHome, { once: true });
+    window.addEventListener('pageshow', resetToHome);
 
     const revealItems = document.querySelectorAll('.reveal');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
